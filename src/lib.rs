@@ -1,10 +1,14 @@
-//! A typed codec for the HID report protocol Byonoy's plate readers
-//! speak.
+//! Typed building blocks for the HID report protocol Byonoy's plate
+//! readers speak.
 //!
 //! - **Report codec** ([`report`]) — pure, no I/O: typed encode and decode
 //!   of the 64-byte HID report protocol. Every report's wire form is
 //!   testable as bytes with no hardware. The Luminescence 96's reports and
 //!   the LED bar reports are covered at this layer only.
+//! - **Transport** ([`transport`]) — a blocking
+//!   [`transport::HidTransport`] trait over 64-byte packets, with a
+//!   `hidapi`-backed implementation behind the `hid` cargo feature and a
+//!   scripted mock for tests.
 //!
 //! There is no vendor library anywhere in the stack: the wire protocol is
 //! implemented directly over the OS HID layer. The protocol knowledge
@@ -14,10 +18,17 @@
 //! material only, not a dependency.
 
 pub mod report;
+pub mod transport;
 
 pub use report::{
     Abs96FirmwareError, AbsorbanceChunk, AbsorbanceTrigger, DeviceDataReply, DeviceDataValue,
     Environment, LedBarEffect, LedEffect, LuminescenceChunk, LuminescenceTrigger, Packet,
     ReportDecodeError, Rgb, RoutingTag, SlotState, Status, SupportedReportsChunk, Versions,
     WellMask,
+};
+#[cfg(feature = "hid")]
+pub use transport::HidapiTransport;
+pub use transport::{
+    ABSORBANCE_96_PRODUCT_ID, BYONOY_VENDOR_ID, DiscoveredDevice, HidError, HidTransport,
+    LUMINESCENCE_96_PRODUCT_ID, MockHidTransport,
 };

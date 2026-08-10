@@ -10,7 +10,15 @@ keywords = ["byonoy", "lab-automation", "plate-reader", "absorbance", "hid"]
 categories = ["science", "hardware-support"]
 
 [dependencies]
+hidapi = { version = "2", optional = true }
 thiserror = "2"
+
+[features]
+# The `hid` feature carries the hidapi-backed transport. Consumers that only
+# encode and decode reports disable default features so they never link the
+# native HID library; a runner enables it.
+default = ["hid"]
+hid = ["dep:hidapi"]
 
 [lints.rust]
 unsafe_code = "forbid"
