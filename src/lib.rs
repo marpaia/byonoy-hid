@@ -1,5 +1,8 @@
-//! Typed building blocks for the HID report protocol Byonoy's plate
-//! readers speak.
+//! A typed driver for Byonoy plate readers, speaking their raw USB HID
+//! protocol. The Absorbance 96 carries a full session layer; the
+//! Luminescence 96 is covered at the report-codec layer.
+//!
+//! The crate is three cleanly separated layers:
 //!
 //! - **Report codec** ([`report`]) — pure, no I/O: typed encode and decode
 //!   of the 64-byte HID report protocol. Every report's wire form is
@@ -9,6 +12,12 @@
 //!   [`transport::HidTransport`] trait over 64-byte packets, with a
 //!   `hidapi`-backed implementation behind the `hid` cargo feature and a
 //!   scripted mock for tests.
+//! - **Session** ([`session`]) — an [`Absorbance96`] handle owning the
+//!   transport: discovery and open-by-path, the mandatory reference
+//!   measurement and wavelength query on setup, the chunk-reassembling
+//!   measurement engine, the post-measurement status gate, and abort.
+//!   Measurements come back in the device's own vocabulary:
+//!   [`AbsorbanceMeasurement`] rows of `f32` optical density.
 //!
 //! There is no vendor library anywhere in the stack: the wire protocol is
 //! implemented directly over the OS HID layer. The protocol knowledge
@@ -18,6 +27,7 @@
 //! material only, not a dependency.
 
 pub mod report;
+pub mod session;
 pub mod transport;
 
 pub use report::{
@@ -26,6 +36,7 @@ pub use report::{
     ReportDecodeError, Rgb, RoutingTag, SlotState, Status, SupportedReportsChunk, Versions,
     WellMask,
 };
+pub use session::{AbortHandle, Absorbance96, Absorbance96Error, AbsorbanceMeasurement, Timeouts};
 #[cfg(feature = "hid")]
 pub use transport::HidapiTransport;
 pub use transport::{
