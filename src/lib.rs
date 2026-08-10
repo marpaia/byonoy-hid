@@ -1,0 +1,23 @@
+//! A typed codec for the HID report protocol Byonoy's plate readers
+//! speak.
+//!
+//! - **Report codec** ([`report`]) — pure, no I/O: typed encode and decode
+//!   of the 64-byte HID report protocol. Every report's wire form is
+//!   testable as bytes with no hardware. The Luminescence 96's reports and
+//!   the LED bar reports are covered at this layer only.
+//!
+//! There is no vendor library anywhere in the stack: the wire protocol is
+//! implemented directly over the OS HID layer. The protocol knowledge
+//! derives from [PyLabRobot](https://github.com/PyLabRobot/pylabrobot)'s
+//! Byonoy implementation (MIT licensed), the de-facto public specification
+//! of this otherwise undocumented protocol. PyLabRobot is reference
+//! material only, not a dependency.
+
+pub mod report;
+
+pub use report::{
+    Abs96FirmwareError, AbsorbanceChunk, AbsorbanceTrigger, DeviceDataReply, DeviceDataValue,
+    Environment, LedBarEffect, LedEffect, LuminescenceChunk, LuminescenceTrigger, Packet,
+    ReportDecodeError, Rgb, RoutingTag, SlotState, Status, SupportedReportsChunk, Versions,
+    WellMask,
+};

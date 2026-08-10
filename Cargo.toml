@@ -1,0 +1,21 @@
+[package]
+name = "byonoy-hid"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+license = "Apache-2.0"
+repository = "https://github.com/lab-lang/byonoy-hid"
+description = "Typed Byonoy Absorbance 96 plate-reader driver speaking the device's USB HID protocol."
+keywords = ["byonoy", "lab-automation", "plate-reader", "absorbance", "hid"]
+categories = ["science", "hardware-support"]
+
+[dependencies]
+thiserror = "2"
+
+[lints.rust]
+unsafe_code = "forbid"
+
+[lints.clippy]
+dbg_macro = "deny"
+todo = "deny"
+unimplemented = "deny"
