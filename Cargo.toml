@@ -1,10 +1,10 @@
 [package]
 name = "byonoy-hid"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 rust-version = "1.95"
 license = "Apache-2.0"
-repository = "https://github.com/lab-lang/byonoy-hid"
+repository = "https://github.com/marpaia/byonoy-hid"
 description = "Typed Byonoy Absorbance 96 plate-reader driver speaking the device's USB HID protocol."
 keywords = ["byonoy", "lab-automation", "plate-reader", "absorbance", "hid"]
 categories = ["science", "hardware-support"]
